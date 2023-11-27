@@ -32,12 +32,11 @@ int main() {
     char numeroRomano[20];
     int numeroDecimal;
 
-    printf("Digite um numero romano: ");
     scanf("%s", numeroRomano);
 
     int resultado = romanoParaDecimal(numeroRomano);
 
-    printf("%s na base 10: %d\n", numeroRomano, resultado);
+    
 
     // Conversão para binário
     int decimalParaBinario = resultado;
@@ -60,6 +59,8 @@ int main() {
         printf("\n");
     }
 
+    printf("%s na base 10: %d\n", numeroRomano, resultado);
+
     // Conversão para hexadecimal
     int decimalParaHexadecimal = resultado;
     char hexadecimal[100];
@@ -73,7 +74,7 @@ int main() {
             if (resto < 10) {
                 hexadecimal[i] = resto + '0';
             } else {
-                hexadecimal[i] = resto + 'A' - 10;
+                hexadecimal[i] = resto + 'a' - 10;
             }
             decimalParaHexadecimal = decimalParaHexadecimal / 16;
             i++;
