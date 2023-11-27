@@ -28,55 +28,6 @@ int romanoParaDecimal(char *romano) {
     return resultado;
 }
 
-void decimalParaBinario(int decimal) {
-    int binario[32];
-    int i = 0;
-
-    if (decimal == 0) {
-        printf("A representacao binaria e: 0\n");
-        return;
-    }
-
-    while (decimal > 0) {
-        binario[i] = decimal % 2;
-        decimal = decimal / 2;
-        i++;
-    }
-
-    printf("%d na base 2: ", decimal);  // Corrigido para imprimir o número decimal
-    for (int j = i - 1; j >= 0; j--) {
-        printf("%d", binario[j]);
-    }
-    printf("\n");
-}
-
-void decimalParaHexadecimal(int decimal) {
-    char hexadecimal[100];
-    int i = 0;
-
-    if (decimal == 0) {
-        printf("A representacao hexadecimal e: 0\n");
-        return;
-    }
-
-    while (decimal > 0) {
-        int resto = decimal % 16;
-        if (resto < 10) {
-            hexadecimal[i] = resto + '0';
-        } else {
-            hexadecimal[i] = resto + 'A' - 10;
-        }
-        decimal = decimal / 16;
-        i++;
-    }
-
-    printf("A representacao hexadecimal e: ");
-    for (int j = i - 1; j >= 0; j--) {
-        printf("%c", hexadecimal[j]);
-    }
-    printf("\n");
-}
-
 int main() {
     char numeroRomano[20];
     int numeroDecimal;
@@ -88,9 +39,52 @@ int main() {
 
     printf("%s na base 10: %d\n", numeroRomano, resultado);
 
-    numeroDecimal = resultado;
-    decimalParaBinario(numeroDecimal);
-    decimalParaHexadecimal(numeroDecimal);
+    // Conversão para binário
+    int decimalParaBinario = resultado;
+    int binario[32];
+    int i = 0;
+
+    if (decimalParaBinario == 0) {
+        printf("A representacao binaria e: 0\n");
+    } else {
+        while (decimalParaBinario > 0) {
+            binario[i] = decimalParaBinario % 2;
+            decimalParaBinario = decimalParaBinario / 2;
+            i++;
+        }
+
+        printf("%s na base 2: ", numeroRomano);
+        for (int j = i - 1; j >= 0; j--) {
+            printf("%d", binario[j]);
+        }
+        printf("\n");
+    }
+
+    // Conversão para hexadecimal
+    int decimalParaHexadecimal = resultado;
+    char hexadecimal[100];
+    i = 0;
+
+    if (decimalParaHexadecimal == 0) {
+        printf("A representacao hexadecimal e: 0\n");
+    } else {
+        while (decimalParaHexadecimal > 0) {
+            int resto = decimalParaHexadecimal % 16;
+            if (resto < 10) {
+                hexadecimal[i] = resto + '0';
+            } else {
+                hexadecimal[i] = resto + 'A' - 10;
+            }
+            decimalParaHexadecimal = decimalParaHexadecimal / 16;
+            i++;
+        }
+
+        printf("%s na base 16: ", numeroRomano);
+        for (int j = i - 1; j >= 0; j--) {
+            printf("%c", hexadecimal[j]);
+        }
+        printf("\n");
+    }
 
     return 0;
 }
