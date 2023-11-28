@@ -3,69 +3,75 @@
 #include <ctype.h>
 
 int main() {
-    char placa[8];
-    char diaSemana[20];  // Usar uma string para armazenar o dia da semana por extenso
+    char vehicle[10], dayName[20];
 
-    // Entrada da placa e do dia da semana
-    printf("Digite a placa do carro (LLL-NNNN ou LLLNLNN): ");
-    scanf("%s", placa);
+    // Função para validar o formato do veículo
+    int validateVehicleFormat(char *vehicle) {
+        int size = strlen(vehicle);
+        if ((size == 8 || size == 7) &&
+            ((isalpha(vehicle[0]) && isalpha(vehicle[1]) && isalpha(vehicle[2]) &&
+              isdigit(vehicle[size - 1])) ||
+             (isalpha(vehicle[0]) && isalpha(vehicle[1]) && isalpha(vehicle[2]) &&
+              isalpha(vehicle[3]) && isdigit(vehicle[size - 1])))) {
+            return 1;
+        }
 
-    printf("Digite o dia da semana por extenso: ");
-    scanf("%s", diaSemana);
-
-    // Converte o dia da semana para minúsculas para facilitar a comparação
-    for (int i = 0; diaSemana[i]; i++) {
-        diaSemana[i] = tolower(diaSemana[i]);
+        return 0;
     }
 
-    // Verifica o formato da placa
-    if ((strlen(placa) == 8 && placa[3] == '-' && isalpha(placa[0]) && isalpha(placa[1]) && isalpha(placa[2]) && isdigit(placa[4]) && isdigit(placa[5]) && isdigit(placa[6]) && isdigit(placa[7])) ||
-        (strlen(placa) == 7 && isalpha(placa[0]) && isalpha(placa[1]) && isalpha(placa[2]) && isdigit(placa[3]) && isalpha(placa[4]) && isdigit(placa[5]) && isdigit(placa[6]))) {
+    // Função para validar o dia da semana
+    int validateDayOfWeek(char *day) {
+        return (strcmp(day, "SEGUNDA-FEIRA") == 0 || strcmp(day, "TERCA-FEIRA") == 0 ||
+                strcmp(day, "QUARTA-FEIRA") == 0 || strcmp(day, "QUINTA-FEIRA") == 0 ||
+                strcmp(day, "SEXTA-FEIRA") == 0 || strcmp(day, "SABADO") == 0 ||
+                strcmp(day, "DOMINGO") == 0);
+    }
 
-        int diaSemanaNumerico;
+    scanf("%s", vehicle);
 
-        // Converte o dia da semana por extenso para um número decimal
-        if (strcmp(diaSemana, "segunda-feira") == 0) {
-            diaSemanaNumerico = 1;
-        } else if (strcmp(diaSemana, "terca-feira") == 0) {
-            diaSemanaNumerico = 2;
-        } else if (strcmp(diaSemana, "quarta-feira") == 0) {
-            diaSemanaNumerico = 3;
-        } else if (strcmp(diaSemana, "quinta-feira") == 0) {
-            diaSemanaNumerico = 4;
-        } else if (strcmp(diaSemana, "sexta-feira") == 0) {
-            diaSemanaNumerico = 5;
-        } else if (strcmp(diaSemana, "sabado") == 0) {
-            diaSemanaNumerico = 6;
-        } else if (strcmp(diaSemana, "domingo") == 0) {
-            diaSemanaNumerico = 7;
-        } else {
-            printf("Dia da semana invalido.\n");
-            return 1;  // Encerra o programa se o dia da semana for inválido
+    for (int i = 0; i < strlen(vehicle); i++) {
+        vehicle[i] = toupper(vehicle[i]);
+    }
+
+    scanf("%s", dayName);
+
+    int lastDigitVehicle = vehicle[strlen(vehicle) - 1] - '0';
+
+    // Validação e exibição de mensagens
+    if (!validateVehicleFormat(vehicle)) {
+        printf("Placa invalida\n");
+        if (!validateDayOfWeek(dayName)) {
+            printf("Dia da semana invalido\n");
         }
-
-        // Verifica o dia da semana usando diaSemanaNumerico
-        switch (diaSemanaNumerico) {
-            case 1: // Segunda-feira
-            case 2: // Terça-feira
-            case 3: // Quarta-feira
-            case 4: // Quinta-feira
-            case 5: // Sexta-feira
-                if (placa[6] == '0' || placa[6] == '1' || placa[6] == '2' || placa[6] == '3' || placa[6] == '4' || placa[6] == '5' || placa[6] == '6' || placa[6] == '7') {
-                    printf("%s pode circular %s.\n", placa, diaSemana);
-                } else {
-                    printf("%s não pode circular %s.\n", placa, diaSemana);
-                }
-                break;
-            case 6: // Sábado
-            case 7: // Domingo
-                printf("%s pode circular no fim de semana.\n", placa);
-                break;
-            default:
-                printf("Dia da semana invalido.\n");
+        return 0;
+    } 
+    if (!validateDayOfWeek(dayName)) {
+        printf("Dia da semana invalido\n");
+        return 0;
+    } 
+    else if (strcmp(dayName, "SABADO") == 0 || strcmp(dayName, "DOMINGO") == 0) {
+        printf("Nao ha proibicao no fim de semana\n");
+    } else {    
+        for (int i = 0; i < strlen(dayName); i++) {
+            dayName[i] = tolower(dayName[i]);
         }
-    } else {
-        printf("Placa invalida.\n");
+        if (strcmp(dayName, "segunda-feira") == 0 || strcmp(dayName, "terca-feira") == 0 ||
+            strcmp(dayName, "quarta-feira") == 0 || strcmp(dayName, "quinta-feira") == 0 ||
+            strcmp(dayName, "sexta-feira") == 0) {
+            if ((lastDigitVehicle == 0 || lastDigitVehicle == 1) && strcmp(dayName, "segunda-feira") == 0) {
+                printf("%s nao pode circular %s\n", vehicle, dayName);
+            } else if ((lastDigitVehicle == 2 || lastDigitVehicle == 3) && strcmp(dayName, "terca-feira") == 0) {
+                printf("%s nao pode circular %s\n", vehicle, dayName);
+            } else if ((lastDigitVehicle == 4 || lastDigitVehicle == 5) && strcmp(dayName, "quarta-feira") == 0) {
+                printf("%s nao pode circular %s\n", vehicle, dayName);
+            } else if ((lastDigitVehicle == 6 || lastDigitVehicle == 7) && strcmp(dayName, "quinta-feira") == 0) {
+                printf("%s nao pode circular %s\n", vehicle, dayName);
+            } else if ((lastDigitVehicle == 8 || lastDigitVehicle == 9) && strcmp(dayName, "sexta-feira") == 0) {
+                printf("%s nao pode circular %s\n", vehicle, dayName);
+            } else {
+                printf("%s pode circular %s\n", vehicle, dayName);
+            }
+        }
     }
 
     return 0;
